@@ -20,22 +20,50 @@ async def admin_default_handler(message: Message) -> None:
     if "http" not in message.text:
         raise ValueError("URL required.")
 
+    href = message.text
+
     # Use the service function to send the API request
-    response = await SwampApiService.explain_feed_href(message.text)
+    feed = await SwampApiService.explain_feed_href(href)
+
+    reply = ""
+    if feed["similar_feeds"]:
+        reply += f"<b>[SIMILAR FEEDS PRESENTS, CANT SAVE]</b>\n\n"
+
+    reply += "<b>EXPLAINED</b>:\n"
+    reply += f"- {feed['explained']['title']}\n"
+    reply += f"- {feed['explained']['href']}\n"
+    reply += f"- {feed['explained']['frequency']}\n"
+    reply += f"- {feed['explained']['json']}\n\n"
+
+    reply += f"similar_feeds: {len(feed['similar_feeds'])}\n"
+    for each in feed["similar_feeds"]:
+        reply += f"- <b>{each['_id']}</b>: {each['title']}\n"
+        reply += f"    - created: {each['_created']}\n"
+        if each["title"] != feed["explained"]["title"]:
+            reply += f"    - title: {each['title']}\n"
+        if each["frequency"] != feed["explained"]["frequency"]:
+            reply += f"\t- frequency: {each['frequency']}"
+        reply += "\n"
+
+    if feed["similar_feeds"]:
+        reply += f"<b>[SIMILAR FEEDS PRESENTS, CANT SAVE]</b>"
 
     # Generate a unique identifier for the response
-    response_id = sha256(str(message.text).encode()).hexdigest()[:16]
+    href_id = sha256(href.encode()).hexdigest()[:16]
 
     # Store the response in Redis with a 1-hour expiration
-    await RedisService.set_with_expiry(f"response:{response_id}", str(response), 3600)
+    await RedisService.set_with_expiry(f"swamp-courier-explain:{href_id}", href, 3600)
 
     # Create an inline keyboard with a callback button
-    keyboard = InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text="Save", callback_data=f"save:{response_id}")]
-    ])
+    inline_keyboard = [[]]
+    if not feed["similar_feeds"]:
+        inline_keyboard = [
+            [InlineKeyboardButton(text="Save", callback_data=f"save:{href_id}")]
+        ]
+    keyboard = InlineKeyboardMarkup(inline_keyboard=inline_keyboard)
 
     await message.reply(
-        f"API Response: {response}",
+        reply,
         reply_markup=keyboard,  # Ensure the keyboard is passed here
     )
 
@@ -43,18 +71,25 @@ async def admin_default_handler(message: Message) -> None:
 @dp.callback_query(lambda c: c.data and c.data.startswith("save:"))
 async def save_callback_handler(callback_query: CallbackQuery) -> None:
     """Process the save button callback."""
-    response_id = callback_query.data.split("save:")[1]
+    href_id = callback_query.data.split("save:")[1]
 
     # Retrieve the response from Redis
-    response = await RedisService.get(f"response:{response_id}")
+    href = await RedisService.get(f"swamp-courier-explain:{href_id}")
 
-    if not response:
+    if not href:
         await callback_query.message.answer("Error: Response not found or expired.")
         await callback_query.answer()  # Acknowledge the callback
         return
 
     # Process the response (e.g., save it to a database or perform another action)
-    print(f"Response to save: {response}")
-    # Simulate saving the response
-    await callback_query.message.answer(f"Response '{response}' has been saved successfully.")
+    feed = await SwampApiService.explain_feed_href(href, mode="push")
+    reply = "<b>SAVED**:\n"
+    reply += f"- {feed['explained']['_id']}\n"
+    reply += f"- {feed['explained']['title']}\n"
+    reply += f"- {feed['explained']['href']}\n"
+    reply += f"- {feed['explained']['frequency']}\n"
+    reply += f"- {feed['explained']['json']}\n\n"
+
+    print(f"Response to save: {href}") 
+    await callback_query.message.answer(reply)
     await callback_query.answer()  # Acknowledge the callback
