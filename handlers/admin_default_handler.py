@@ -18,7 +18,10 @@ async def admin_default_handler(message: Message) -> None:
     href = message.text
 
     # Use the service function to send the API request
-    feed = await SwampApiService.explain_feed_href(href)
+    if getenv("TELEGRAM_SKIP_CONFIRMATION"):
+        feed = SwampApiService.explain_feed_href(href, mode="push")
+    else:
+        feed = await SwampApiService.explain_feed_href(href)
 
     reply = ""
     if feed["similar_feeds"]:
@@ -51,7 +54,7 @@ async def admin_default_handler(message: Message) -> None:
 
     # Create an inline keyboard with a callback button
     inline_keyboard = [[]]
-    if not feed["similar_feeds"]:
+    if not feed["similar_feeds"] or not getenv("TELEGRAM_SKIP_CONFIRMATION"):
         inline_keyboard = [
             [InlineKeyboardButton(text="Save", callback_data=f"save:{href_id}")]
         ]
