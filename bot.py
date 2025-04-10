@@ -6,9 +6,14 @@ from os import getenv
 from aiogram import Bot
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
-from config.dispatcher import dp
 
 import handlers  # import handlers to register them
+from config.dispatcher import dp
+from middlewares.error_handling_middleware import ErrorHandlingMiddleware
+
+
+# Add the error-handling middleware
+dp.update.outer_middleware(ErrorHandlingMiddleware())
 
 
 async def main() -> None:
