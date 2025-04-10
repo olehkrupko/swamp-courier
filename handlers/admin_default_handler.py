@@ -35,7 +35,7 @@ async def admin_default_handler(message: Message) -> None:
 
     reply += f"similar_feeds: {len(feed['similar_feeds'])}\n"
     for each in feed["similar_feeds"]:
-        reply += f"- <b>{each['_id']}</b>: {each['title']}\n"
+        reply += f"<b>{each['_id']}</b>: {each['title']}\n"
         reply += f"    - created: {each['_created']}\n"
         if each["title"] != feed["explained"]["title"]:
             reply += f"    - title: {each['title']}\n"
