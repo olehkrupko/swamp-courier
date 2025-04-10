@@ -3,12 +3,20 @@ from os import getenv
 from aiogram.types import Message
 
 from config.dispatcher import dp
+from services.swamp_api_service import explain_feed_href  # Updated import
 
 
 @dp.message()
 async def admin_default_handler(message: Message) -> None:
     """Handler that only works for a specific chat ID."""
-    if getenv("SPECIFIC_CHAT_ID") and message.chat.id == getenv("SPECIFIC_CHAT_ID"):
-        await message.reply("You have access to this handler!")
-    else:
+    telegram_admin_chatid = getenv("TELEGRAM_ADMIN_CHATID")
+
+    if not telegram_admin_chatid:
+        raise ValueError("TELEGRAM_ADMIN_CHATID environment variable is not set.")
+    if message.chat.id != telegram_admin_chatid:
         await message.reply("Access denied.")
+
+    # Use the service function to send the API request
+    response = await explain_feed_href(message.text)
+
+    await message.reply(f"API Response: {response}")
