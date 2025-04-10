@@ -13,7 +13,7 @@ async def admin_default_handler(message: Message) -> None:
 
     if not telegram_admin_chatid:
         raise ValueError("TELEGRAM_ADMIN_CHATID environment variable is not set.")
-    if message.chat.id != telegram_admin_chatid:
+    if message.chat.id != int(telegram_admin_chatid):
         raise PermissionError("Access denied.")
 
     # Use the service function to send the API request
