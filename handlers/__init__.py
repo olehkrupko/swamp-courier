@@ -1,3 +1,3 @@
-from .admin_default_handler import admin_default_handler
-from .echo_handler import echo_handler
-from .start_handler import start_handler
+from .admin_default_handler import *
+from .echo_handler import *
+from .start_handler import *
