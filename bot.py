@@ -1,16 +1,8 @@
 import os
 import asyncio
 import signal
-from telegram import Bot, Update
-from telegram.ext import Application, CommandHandler, MessageHandler, filters
-
-# Command handler for the /start command
-async def start(update: Update, context):
-    await update.message.reply_text("Hello! I am your bot. How can I assist you?")
-
-# Echo handler for all text messages
-async def echo(update: Update, context):
-    await update.message.reply_text(update.message.text)
+from telegram.ext import Application
+from handlers import start_handler, echo_handler
 
 # Main function to start the bot
 async def main():
@@ -22,8 +14,8 @@ async def main():
     application = Application.builder().token(token).build()
 
     # Add command and message handlers
-    application.add_handler(CommandHandler("start", start))
-    application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, echo))
+    application.add_handler(start_handler)
+    application.add_handler(echo_handler)
 
     # Graceful shutdown handling
     async def shutdown():
