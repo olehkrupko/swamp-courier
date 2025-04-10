@@ -1,34 +1,18 @@
-import os
 import asyncio
-import signal
-from telegram.ext import Application
-from handlers import start_handler, echo_handler
+import logging
+import sys
+from os import getenv
 
-# Main function to start the bot
-async def main():
-    token = os.environ.get("TELEGRAM_BOTTOKEN")
-    if not token:
-        raise ValueError("TELEGRAM_BOTTOKEN environment variable is not set.")
+from aiogram import Bot
+from aiogram.client.default import DefaultBotProperties
+from aiogram.enums import ParseMode
+from config.dispatcher import dp
+import handlers  # Import handlers to register them
 
-    # Create the application
-    application = Application.builder().token(token).build()
-
-    # Add command and message handlers
-    application.add_handler(start_handler)
-    application.add_handler(echo_handler)
-
-    # Graceful shutdown handling
-    async def shutdown():
-        print("Shutting down bot...")
-        await application.shutdown()
-
-    loop = asyncio.get_running_loop()
-    for sig in (signal.SIGINT, signal.SIGTERM):
-        loop.add_signal_handler(sig, lambda: asyncio.create_task(shutdown()))
-
-    # Start the bot
-    print("Bot is running...")
-    await application.run_polling()
+async def main() -> None:
+    bot = Bot(token=getenv("TELEGRAM_BOTTOKEN"), default=DefaultBotProperties(parse_mode=ParseMode.HTML))
+    await dp.start_polling(bot)
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO, stream=sys.stdout)
     asyncio.run(main())

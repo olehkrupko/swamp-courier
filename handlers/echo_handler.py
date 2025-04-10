@@ -1,9 +1,10 @@
-from telegram import Update
-from telegram.ext import MessageHandler, ContextTypes, filters
+from aiogram.types import Message
+from config.dispatcher import dp
 
-class EchoHandler:
-    async def handle(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
-        await update.message.reply_text(update.message.text)
-
-    def get_handler(self):
-        return MessageHandler(filters.TEXT & ~filters.COMMAND, self.handle)
+@dp.message()
+async def echo_handler(message: Message) -> None:
+    """Handler will forward received messages back to the sender."""
+    try:
+        await message.send_copy(chat_id=message.chat.id)
+    except TypeError:
+        await message.answer("Nice try!")

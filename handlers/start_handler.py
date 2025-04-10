@@ -1,9 +1,9 @@
-from telegram import Update
-from telegram.ext import CommandHandler, ContextTypes
+from aiogram import html
+from aiogram.filters import CommandStart
+from aiogram.types import Message
+from config.dispatcher import dp
 
-class StartHandler:
-    async def handle(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
-        await update.message.reply_text("Hello! I am your bot. How can I assist you?")
-
-    def get_handler(self):
-        return CommandHandler("start", self.handle)
+@dp.message(CommandStart())
+async def command_start_handler(message: Message) -> None:
+    """This handler receives messages with `/start` command."""
+    await message.answer(f"Hello, {html.bold(message.from_user.full_name)}!")
