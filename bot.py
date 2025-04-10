@@ -19,7 +19,10 @@ dp.update.outer_middleware(ErrorHandlingMiddleware())
 async def main() -> None:
     bot = Bot(
         token=getenv("TELEGRAM_BOTTOKEN"),
-        default=DefaultBotProperties(parse_mode=ParseMode.HTML),
+        default=DefaultBotProperties(
+            parse_mode=ParseMode.HTML,
+            link_preview_is_disabled=True,
+        ),
     )
 
     await dp.start_polling(bot)
