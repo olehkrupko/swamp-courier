@@ -7,10 +7,16 @@ from aiogram import Bot
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from config.dispatcher import dp
-import handlers  # Import handlers to register them
+
+import handlers  # import handlers to register them
+
 
 async def main() -> None:
-    bot = Bot(token=getenv("TELEGRAM_BOTTOKEN"), default=DefaultBotProperties(parse_mode=ParseMode.HTML))
+    bot = Bot(
+        token=getenv("TELEGRAM_BOTTOKEN"),
+        default=DefaultBotProperties(parse_mode=ParseMode.HTML),
+    )
+
     await dp.start_polling(bot)
 
 if __name__ == "__main__":

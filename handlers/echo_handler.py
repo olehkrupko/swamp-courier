@@ -1,10 +1,12 @@
 from aiogram.types import Message
+
 from config.dispatcher import dp
+
 
 @dp.message()
 async def echo_handler(message: Message) -> None:
-    """Handler will forward received messages back to the sender."""
+    """Handler will reply to the received message."""
     try:
-        await message.send_copy(chat_id=message.chat.id)
+        await message.reply(message.text)
     except TypeError:
         await message.answer("Nice try!")
