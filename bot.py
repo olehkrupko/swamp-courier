@@ -1,42 +1,32 @@
-import os
 import asyncio
-import signal
-from telegram import Bot, Update
-from telegram.ext import Application, CommandHandler, MessageHandler, filters
+import logging
+import sys
+from os import getenv
 
-# Command handler for the /start command
-async def start(update: Update, context):
-    await update.message.reply_text("Hello! I am your bot. How can I assist you?")
+from aiogram import Bot
+from aiogram.client.default import DefaultBotProperties
+from aiogram.enums import ParseMode
 
-# Echo handler for all text messages
-async def echo(update: Update, context):
-    await update.message.reply_text(update.message.text)
+import handlers  # import handlers to register them
+from config.dispatcher import dp
+from middlewares.error_handling_middleware import ErrorHandlingMiddleware
 
-# Main function to start the bot
-async def main():
-    token = os.environ.get("TELEGRAM_BOTTOKEN")
-    if not token:
-        raise ValueError("TELEGRAM_BOTTOKEN environment variable is not set.")
 
-    # Create the application
-    application = Application.builder().token(token).build()
+# Add the error-handling middleware
+dp.update.outer_middleware(ErrorHandlingMiddleware())
 
-    # Add command and message handlers
-    application.add_handler(CommandHandler("start", start))
-    application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, echo))
 
-    # Graceful shutdown handling
-    async def shutdown():
-        print("Shutting down bot...")
-        await application.shutdown()
+async def main() -> None:
+    bot = Bot(
+        token=getenv("TELEGRAM_BOTTOKEN"),
+        default=DefaultBotProperties(
+            parse_mode=ParseMode.HTML,
+            link_preview_is_disabled=True,
+        ),
+    )
 
-    loop = asyncio.get_running_loop()
-    for sig in (signal.SIGINT, signal.SIGTERM):
-        loop.add_signal_handler(sig, lambda: asyncio.create_task(shutdown()))
-
-    # Start the bot
-    print("Bot is running...")
-    await application.run_polling()
+    await dp.start_polling(bot)
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO, stream=sys.stdout)
     asyncio.run(main())
