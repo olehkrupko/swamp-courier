@@ -10,7 +10,7 @@ from services.swamp_api_service import SwampApiService
 
 
 @dp.message(F.chat.func(lambda chat: chat.id == getenv("TELEGRAM_ADMIN_CHATID")) and F.text.contains("http"))
-async def admin_default_handler(message: Message) -> None:
+async def admin_http_handler(message: Message) -> None:
     """Handler that only works for a specific chat ID."""
     if not getenv("TELEGRAM_ADMIN_CHATID"):
         raise ValueError("TELEGRAM_ADMIN_CHATID environment variable is not set.")
@@ -56,7 +56,7 @@ async def admin_default_handler(message: Message) -> None:
     inline_keyboard = [[]]
     if not feed["similar_feeds"] or not getenv("TELEGRAM_SKIP_CONFIRMATION"):
         inline_keyboard = [
-            [InlineKeyboardButton(text="Save", callback_data=f"save:{href_id}")]
+            [InlineKeyboardButton(text="Save", callback_data=f"admin-save:{href_id}")]
         ]
     keyboard = InlineKeyboardMarkup(inline_keyboard=inline_keyboard)
 
@@ -64,30 +64,3 @@ async def admin_default_handler(message: Message) -> None:
         reply,
         reply_markup=keyboard,  # Ensure the keyboard is passed here
     )
-
-
-@dp.callback_query(lambda c: c.data and c.data.startswith("save:"))
-async def save_callback_handler(callback_query: CallbackQuery) -> None:
-    """Process the save button callback."""
-    href_id = callback_query.data.split("save:")[1]
-
-    # Retrieve the response from Redis
-    href = await RedisService.get(f"swamp-courier-explain:{href_id}")
-
-    if not href:
-        await callback_query.message.answer("Error: Response not found or expired.")
-        await callback_query.answer()  # Acknowledge the callback
-        return
-
-    # Process the response (e.g., save it to a database or perform another action)
-    feed = await SwampApiService.explain_feed_href(href, mode="push")
-    reply = "<b>SAVED**:\n"
-    reply += f"- {feed['explained']['_id']}\n"
-    reply += f"- {feed['explained']['title']}\n"
-    reply += f"- {feed['explained']['href']}\n"
-    reply += f"- {feed['explained']['frequency']}\n"
-    reply += f"- {feed['explained']['json']}\n\n"
-
-    print(f"Response to save: {href}") 
-    await callback_query.message.answer(reply)
-    await callback_query.answer()  # Acknowledge the callback
