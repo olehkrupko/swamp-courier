@@ -40,6 +40,7 @@ jobs:
 
           # uses the Docker latest tag convention.
           [ "$VERSION" == "main" ] && VERSION=latest
+          [ "$VERSION" != "main" ] && VERSION=dev
           echo IMAGE_ID=$IMAGE_ID
           echo VERSION=$VERSION
           docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
