@@ -27,15 +27,11 @@ jobs:
 
       - name: Push image
         run: |
-          echo ${{ github.repository }}
-          
           IMAGE_ID=ghcr.io/$IMAGE_NAME
-          echo IMAGE_ID=$IMAGE_ID
           
           # changes all uppercase characters to lowercase.
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-          echo IMAGE_ID=$IMAGE_ID
-
+          
           # strips the git ref prefix from the version.
           VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
           echo VERSION=$VERSION
