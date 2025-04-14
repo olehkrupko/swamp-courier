@@ -28,22 +28,18 @@ jobs:
       - name: Push image
         run: |
           IMAGE_ID=ghcr.io/$IMAGE_NAME
-          
-          # changes all uppercase characters to lowercase.
+          # changes all uppercase characters to lowercase:
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-          
-          # strips the git ref prefix from the version.
-          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-          echo VERSION=$VERSION
-
-          # strips the "v" prefix from the tag name.
-          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
-          echo VERSION=$VERSION
-
-          # uses the Docker latest tag convention.
-          [ "$VERSION" == "main" ] && VERSION=latest
-          [ "$VERSION" != "main" ] && VERSION=dev
           echo IMAGE_ID=$IMAGE_ID
-          echo VERSION=$VERSION
-          docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
+          
+          BRANCH=${{ github.ref_name }}
+          echo BRANCH=$BRANCH
+          if [[ "$BRANCH" == "main" ]]; then
+            echo VERSION=latest
+            docker tag $IMAGE_NAME $IMAGE_ID:latest
+          else
+            echo VERSION=dev
+            docker tag $IMAGE_NAME $IMAGE_ID:dev
+          fi
+          
           docker push $IMAGE_ID:$VERSION
