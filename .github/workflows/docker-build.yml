@@ -31,6 +31,8 @@ jobs:
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
           echo IMAGE_ID=$IMAGE_ID
           
+          # push into main branch is a release to latest
+          # each PR has a separate tag: pr-<number>
           if [[ "$GITHUB_EVENT_NAME" == "pull_request" ]]; then
             VERSION=pr-${{ github.event.pull_request.number }}
           elif [[ "$GITHUB_REF_NAME" == "main" ]]; then
