@@ -27,6 +27,8 @@ jobs:
 
       - name: Push image
         run: |
+          echo ${{ github.repository }}
+          
           IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
           echo IMAGE_ID=$IMAGE_ID
           
