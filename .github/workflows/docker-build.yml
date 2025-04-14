@@ -31,14 +31,12 @@ jobs:
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
           echo IMAGE_ID=$IMAGE_ID
           
-          BRANCH=${{ github.head_ref || github.ref_name }} 
-          echo BRANCH=$BRANCH
-          if [[ "$BRANCH" == "main" ]]; then
-            echo VERSION=latest
-            docker tag $IMAGE_NAME $IMAGE_ID:latest
-          else
-            echo VERSION=dev
-            docker tag $IMAGE_NAME $IMAGE_ID:dev
+          if [[ "$GITHUB_EVENT_NAME" == "pull_request" ]]; then
+            VERSION=pr-${{ github.event.pull_request.number }}
+          elif [[ "$GITHUB_REF_NAME" == "main" ]]; then
+            VERSION=latest
           fi
+          echo VERSION=$VERSION
           
+          docker image tag $IMAGE_NAME $IMAGE_ID:$VERSION
           docker push $IMAGE_ID:$VERSION
