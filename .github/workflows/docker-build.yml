@@ -24,7 +24,6 @@ jobs:
         run: docker build . --file Dockerfile --tag $IMAGE_NAME --label "runnumber=${GITHUB_RUN_ID}"
       - name: Log in to registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-
       - name: Push image
         run: |
           IMAGE_ID=ghcr.io/$IMAGE_NAME
@@ -32,7 +31,7 @@ jobs:
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
           echo IMAGE_ID=$IMAGE_ID
           
-          BRANCH=${{ github.ref_name }}
+          BRANCH=${{ github.head_ref || github.ref_name }} 
           echo BRANCH=$BRANCH
           if [[ "$BRANCH" == "main" ]]; then
             echo VERSION=latest
