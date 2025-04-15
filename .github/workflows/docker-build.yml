@@ -41,4 +41,5 @@ jobs:
           echo VERSION=$VERSION
           
           docker image tag $IMAGE_NAME $IMAGE_ID:$VERSION
+          docker image tag $IMAGE_NAME $IMAGE_ID:milestone-${{ github.event.pull_request.milestone.number }}
           docker push $IMAGE_ID:$VERSION
