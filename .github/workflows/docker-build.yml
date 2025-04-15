@@ -52,6 +52,12 @@ jobs:
               docker push $IMAGE_ID:$MILESTONE
               echo "docker push $IMAGE_ID:$MILESTONE"
             fi
+
+            ISSUE_URL=issue-${{ github.event.pull_request.issue_url }}
+            echo ISSUE_URL=$ISSUE_URL
+            docker tag $IMAGE_NAME $IMAGE_ID:$ISSUE_URL
+            docker push $IMAGE_ID:$ISSUE_URL
+            echo "docker push $IMAGE_ID:$ISSUE_URL"
           fi
           
           # everything is also pushed to dev
