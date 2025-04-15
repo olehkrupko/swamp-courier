@@ -42,6 +42,5 @@ jobs:
           MILESTONE=milestone-${{ github.event.pull_request.milestone.number }}
           echo MILESTONE=$MILESTONE
           
-          docker image tag $IMAGE_NAME $IMAGE_ID:$VERSION
-          docker image tag $IMAGE_NAME $IMAGE_ID:$MILESTONE
+          docker image tag $IMAGE_NAME $IMAGE_ID:$VERSION $IMAGE_ID:$MILESTONE
           docker push $IMAGE_ID:$VERSION
