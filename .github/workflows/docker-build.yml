@@ -32,15 +32,17 @@ jobs:
           echo IMAGE_ID=$IMAGE_ID
           
           # push into main branch is a release to latest
+          if [[ "$GITHUB_EVENT_NAME" == "push" && "$GITHUB_REF_NAME" == "main" ]]; then
+            docker tag $IMAGE_NAME $IMAGE_ID:latest
+            docker push $IMAGE_ID:latest
+            echo "docker push $IMAGE_ID:latest"
+          fi
+          
           # each PR has a separate tag: pr-<number>
           if [[ "$GITHUB_EVENT_NAME" == "pull_request" ]]; then
-            VERSION=pr-${{ github.event.pull_request.number }}
-          elif [[ "$GITHUB_REF_NAME" == "main" ]]; then
-            VERSION=latest
+            PR=pr-${{ github.event.pull_request.number }}
+            docker tag $IMAGE_NAME $IMAGE_ID:$PR
+            docker push $IMAGE_ID:$PR
+            echo "docker push $IMAGE_ID:$PR"
           fi
-          echo VERSION=$VERSION
-          MILESTONE=milestone-${{ github.event.pull_request.milestone.number }}
-          echo MILESTONE=$MILESTONE
           
-          docker image tag $IMAGE_NAME $IMAGE_ID:$VERSION $IMAGE_ID:$MILESTONE
-          docker push $IMAGE_ID:$VERSION
