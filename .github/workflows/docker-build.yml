@@ -54,7 +54,7 @@ jobs:
             
             # as a workaround as we cannot access the issue number from the PR
             # we can use the branch name as they are expected to start from issuue number
-            ISSUE_NUMBER=$(echo ${{ github.ref_name }} | cut -d '-' -f 0)
+            ISSUE_NUMBER=$(echo ${{ github.ref_name }} | cut -d '-' -f 1)
             if [[ "$ISSUE_NUMBER" =~ ^[0-9]+$ ]]; then
               echo "ISSUE_NUMBER is a number: $ISSUE_NUMBER"
               docker tag $IMAGE_NAME $IMAGE_ID:$ISSUE_NUMBER
