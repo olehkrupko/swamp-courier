@@ -33,6 +33,7 @@ jobs:
           
           # push into main branch is a release to latest
           if [[ "$GITHUB_EVENT_NAME" == "push" && "$GITHUB_REF_NAME" == "main" ]]; then
+            echo "expected to be main: ${{ github.ref_name }}"
             docker tag $IMAGE_NAME $IMAGE_ID:latest
             docker push $IMAGE_ID:latest
             echo "docker push $IMAGE_ID:latest"
@@ -44,5 +45,13 @@ jobs:
             docker tag $IMAGE_NAME $IMAGE_ID:$PR
             docker push $IMAGE_ID:$PR
             echo "docker push $IMAGE_ID:$PR"
+
+            if [[ "${{ github.event.pull_request.milestone }}" != "null" ]]; then
+              MILESTONE=milestone-${{ github.event.pull_request.milestone.number }}
+              echo MILESTONE=$MILESTONE
+              docker tag $IMAGE_NAME $IMAGE_ID:$MILESTONE
+              docker push $IMAGE_ID:$MILESTONE
+              echo "docker push $IMAGE_ID:$MILESTONE"
+            fi
           fi
           
