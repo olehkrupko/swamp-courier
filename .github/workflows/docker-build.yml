@@ -54,3 +54,7 @@ jobs:
             fi
           fi
           
+          # everything is also pushed to dev
+          docker tag $IMAGE_NAME $IMAGE_ID:dev
+          docker push $IMAGE_ID:dev
+          echo "docker push $IMAGE_ID:dev"
