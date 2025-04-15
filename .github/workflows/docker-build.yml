@@ -30,10 +30,10 @@ jobs:
           # changes all uppercase characters to lowercase:
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
           echo IMAGE_ID=$IMAGE_ID
+          echo "expected to be main: ${{ github.ref_name }}"
           
           # push into main branch is a release to latest
           if [[ "$GITHUB_EVENT_NAME" == "push" && "$GITHUB_REF_NAME" == "main" ]]; then
-            echo "expected to be main: ${{ github.ref_name }}"
             docker tag $IMAGE_NAME $IMAGE_ID:latest
             docker push $IMAGE_ID:latest
             echo "docker push $IMAGE_ID:latest"
