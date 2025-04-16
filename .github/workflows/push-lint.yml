@@ -3,4 +3,4 @@ run-name: Lint push to ${{ github.ref_name }}
 on: push
 jobs:
   push-lint:
-      uses: olehkrupko/swamp-api/.github/workflows/push-lint.yml@26-telegram-ingestion
+    uses: olehkrupko/swamp-api/.github/workflows/push-lint.yml@26-telegram-ingestion
