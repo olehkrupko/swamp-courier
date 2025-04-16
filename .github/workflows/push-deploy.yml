@@ -44,14 +44,14 @@ jobs:
             docker tag $IMAGE_NAME $IMAGE_ID:$PR
             docker push $IMAGE_ID:$PR
             echo "docker push $IMAGE_ID:$PR"
-          fi
-          
-          # each PR with a milestone has a separate tag: milestone-<number>
-          if [[ "${{ github.event.pull_request.milestone }}" != "null" ]]; then
-            MILESTONE=milestone-${{ github.event.pull_request.milestone.number }}
-            docker tag $IMAGE_NAME $IMAGE_ID:$MILESTONE
-            docker push $IMAGE_ID:$MILESTONE
-            echo "docker push $IMAGE_ID:$MILESTONE"
+            
+            # each PR with a milestone has a separate tag: milestone-<number>
+            if [[ "${{ github.event.pull_request.milestone }}" != "null" ]]; then
+              MILESTONE=milestone-${{ github.event.pull_request.milestone.number }}
+              docker tag $IMAGE_NAME $IMAGE_ID:$MILESTONE
+              docker push $IMAGE_ID:$MILESTONE
+              echo "docker push $IMAGE_ID:$MILESTONE"
+            fi
           fi
           
           # everything is also pushed to dev
