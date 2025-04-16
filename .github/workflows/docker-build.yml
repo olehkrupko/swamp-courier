@@ -44,27 +44,6 @@ jobs:
             docker tag $IMAGE_NAME $IMAGE_ID:$PR
             docker push $IMAGE_ID:$PR
             echo "docker push $IMAGE_ID:$PR"
-
-            if [[ "${{ github.event.pull_request.milestone }}" != "null" ]]; then
-              MILESTONE=milestone-${{ github.event.pull_request.milestone.number }}
-              docker tag $IMAGE_NAME $IMAGE_ID:$MILESTONE
-              docker push $IMAGE_ID:$MILESTONE
-              echo "docker push $IMAGE_ID:$MILESTONE"
-            fi
-            
-            # as a workaround as we cannot access the issue number from the PR
-            # we can use the branch name as they are expected to start from issuue number
-            ISSUE_NUMBER=$(echo ${{ github.ref_name }} | cut -d '-' -f 1)
-            if [[ "$ISSUE_NUMBER" =~ ^[0-9]+$ ]]; then
-              echo "ISSUE_NUMBER is a number: $ISSUE_NUMBER"
-              docker tag $IMAGE_NAME $IMAGE_ID:$ISSUE_NUMBER
-              docker push $IMAGE_ID:$ISSUE_NUMBER
-              echo "docker push $IMAGE_ID:$ISSUE_NUMBER"
-            else
-              echo "Branch name does not start with a number: ${{ github.ref_name }}"
-              exit 1  # Fail the GitHub Action
-            fi
-          fi
           
           # everything is also pushed to dev
           docker tag $IMAGE_NAME $IMAGE_ID:dev
