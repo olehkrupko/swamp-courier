@@ -44,6 +44,7 @@ jobs:
             docker tag $IMAGE_NAME $IMAGE_ID:$PR
             docker push $IMAGE_ID:$PR
             echo "docker push $IMAGE_ID:$PR"
+          fi
           
           # everything is also pushed to dev
           docker tag $IMAGE_NAME $IMAGE_ID:dev
