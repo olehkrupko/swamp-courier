@@ -27,11 +27,11 @@ async def main() -> None:
     )
 
     # Send message to admin on startup
-    message = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    message += ": Bot started successfully!"
     await bot.send_message(
         chat_id = getenv("TELEGRAM_ADMIN_CHATID"),
-        text = message,
+        text = "{dt} - Bot started successfully!".format(
+            dt=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        ),
     )
 
     await dp.start_polling(bot)
