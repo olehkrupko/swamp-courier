@@ -1,6 +1,7 @@
 import asyncio
 import logging
 import sys
+from datetime import datetime
 from os import getenv
 
 from aiogram import Bot
@@ -23,6 +24,14 @@ async def main() -> None:
             parse_mode=ParseMode.HTML,
             link_preview_is_disabled=True,
         ),
+    )
+
+    # Send message to admin on startup
+    message = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    message += ": Bot started successfully!"
+    await bot.send_message(
+        chat_id = getenv("TELEGRAM_ADMIN_CHATID"),
+        text = message,
     )
 
     await dp.start_polling(bot)
