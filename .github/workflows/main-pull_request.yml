@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: olehkrupko/workflows/docker-build-push.yml@1-docker-build-workflow
+      - uses: olehkrupko/workflows/docker-build-push@1-docker-build-workflow
         with:
           image-name: ${{ github.repository }}
           is-latest: false
