@@ -18,6 +18,7 @@ dp.update.outer_middleware(ErrorHandlingMiddleware())
 
 
 async def main() -> None:
+    # set up and log the bot in
     bot = Bot(
         token=getenv("TELEGRAM_BOTTOKEN"),
         default=DefaultBotProperties(
@@ -28,12 +29,13 @@ async def main() -> None:
 
     # Send message to admin on startup
     await bot.send_message(
-        chat_id = getenv("TELEGRAM_ADMIN_CHATID"),
-        text = "{dt} - Bot started successfully!".format(
+        chat_id=getenv("TELEGRAM_ADMIN_CHATID"),
+        text="{dt} - Bot started successfully!".format(
             dt=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         ),
     )
 
+    # Start polling received messages
     await dp.start_polling(bot)
 
 if __name__ == "__main__":
