@@ -26,7 +26,7 @@ async def main() -> None:
             link_preview_is_disabled=True,
         ),
     )
-
+    
     # Send message to admin on startup
     await bot.send_message(
         chat_id=getenv("TELEGRAM_ADMIN_CHATID"),
