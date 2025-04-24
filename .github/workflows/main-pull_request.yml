@@ -1,0 +1,18 @@
+name: PR main - Build & Push Docker image
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: olehkrupko/workflows/docker-build-push.yml@1-docker-build-workflow
+        with:
+          image-name: ${{ github.repository }}
+          is-latest: false
+          pr-number: ${{ github.event.pull_request.number }}
+          milestone-number: ${{ github.event.pull_request.milestone.number }}

@@ -1,0 +1,16 @@
+name: push main - Build & Push Docker image
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: olehkrupko/workflows/docker-build-push.yml@1-docker-build-workflow
+        with:
+          image-name: ${{ github.repository }}
+          is-latest: true
