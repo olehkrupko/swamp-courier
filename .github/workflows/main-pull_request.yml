@@ -10,9 +10,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: olehkrupko/workflows/docker-build-push@1-docker-build-workflow
+      - name: build, tag & push Docker image
+        uses: olehkrupko/workflows/docker-build-push@1-docker-build-workflow
         with:
           image-name: ${{ github.repository }}
           is-latest: false
           pr-number: ${{ github.event.pull_request.number }}
           milestone-number: ${{ github.event.pull_request.milestone.number }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
