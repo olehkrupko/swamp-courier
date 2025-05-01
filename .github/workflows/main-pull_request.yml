@@ -14,7 +14,7 @@ jobs:
 
     steps:
       - name: build, tag & push Docker image
-        uses: olehkrupko/actions/docker-build-push@main
+        uses: olehkrupko/actions/docker-build-push@3-docker-build-push-milestone-broken
         with:
           image-name: ${{ github.repository }}
           is-latest: false
