@@ -18,7 +18,7 @@ async def admin_http_handler(message: Message) -> None:
     href = message.text
 
     # Use the service function to send the API request
-    if getenv("TELEGRAM_SKIP_CONFIRMATION"):
+    if getenv("TELEGRAM_CONFIRMATIONSKIP"):
         feed = await SwampApiService.explain_feed_href(href, mode="push")
     else:
         feed = await SwampApiService.explain_feed_href(href)
@@ -54,7 +54,7 @@ async def admin_http_handler(message: Message) -> None:
 
     # Create an inline keyboard with a callback button
     inline_keyboard = [[]]
-    if not feed["similar_feeds"] and not getenv("TELEGRAM_SKIP_CONFIRMATION", False):
+    if not feed["similar_feeds"] and not getenv("TELEGRAM_CONFIRMATIONSKIP", False):
         inline_keyboard = [
             [InlineKeyboardButton(text="Save", callback_data=f"admin-save:{href_id}")]
         ]
