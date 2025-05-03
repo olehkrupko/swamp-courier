@@ -7,7 +7,7 @@ from services.redis_service import RedisService
 from services.swamp_api_service import SwampApiService
 
 
-# requires TELEGRAM_CONFIRMATIONSKIP=false to function
+# requires TELEGRAM_AUTOCONFIRM=false to function
 # if it's true, feed will be authomatically saved
 # and the button won't be shown
 @dp.callback_query(lambda c: c.data and c.data.startswith("admin-save:"))
