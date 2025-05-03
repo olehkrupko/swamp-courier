@@ -12,7 +12,7 @@ from services.swamp_api_service import SwampApiService
 # and the button won't be shown
 @dp.callback_query(lambda c: c.data and c.data.startswith("admin-save:"))
 async def admin_save_callback(callback_query: CallbackQuery) -> None:
-    """Process the save button callback."""
+    """Process Save button callback for admin_http_handler."""
     href_id = callback_query.data.split("admin-save:")[1]
 
     # Retrieve the response from Redis
