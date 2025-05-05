@@ -1,7 +1,7 @@
 from hashlib import sha256
 from os import getenv
 
-from aiogram import Router
+from aiogram import Router as AiogramRouter
 from aiogram.types import (
     InlineKeyboardButton,
     InlineKeyboardMarkup,
@@ -14,7 +14,7 @@ from services.swamp_api_service import SwampApiService
 from utils.is_admin import is_admin
 
 
-router = Router(name=__name__)
+router = AiogramRouter(name=__name__)
 
 
 @router.message(F.chat.func(is_admin) and F.text.contains("http"))
