@@ -25,7 +25,11 @@ async def main() -> None:
     disp = Dispatcher(bot=bot)
 
     # Register start handler
-    disp.include_routers(handlers)
+    disp.include_routers([
+        handlers.command_start_handler.router,
+        handlers.admin_http_handler.router,
+        handlers.admin_save_callback.router,
+    ])
 
     # Add the error-handling middleware
     disp.update.outer_middleware(ErrorHandlingMiddleware())
