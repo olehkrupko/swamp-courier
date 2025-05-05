@@ -27,7 +27,7 @@ async def main() -> None:
 
         # Set once to False to allow multiple handlers for the same message type
         disp.message_handlers.once = True
-
+        
         # Register start handler
         disp.register_message_handler(handlers.start_handler)
         # Register admin handlers
