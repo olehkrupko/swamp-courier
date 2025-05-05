@@ -29,11 +29,13 @@ async def main() -> None:
     print(f"{type(handlers.admin_http_handler.router)=} {handlers.admin_http_handler.router=}")
     print(f"{type(handlers.admin_save_callback.router)=} {handlers.admin_save_callback.router=}")
     # Register start handler
-    disp.include_routers([
-        handlers.command_start_handler.router,
-        handlers.admin_http_handler.router,
-        handlers.admin_save_callback.router,
-    ])
+    disp.include_routers(
+        [
+            handlers.command_start_handler.router,
+            handlers.admin_http_handler.router,
+            handlers.admin_save_callback.router,
+        ]
+    )
 
     # Add the error-handling middleware
     disp.update.outer_middleware(ErrorHandlingMiddleware())
