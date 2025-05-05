@@ -7,7 +7,7 @@ on:
 
 jobs:
   push-lint-workflow:
-    uses: olehkrupko/actions/python-lint/workflow.yml@6-python-lint-reusable-action
+    uses: olehkrupko/actions/.github/workflows/python-lint.yml@6-python-lint-reusable-action
   push-lint-action:
     runs-on: ubuntu-latest
     steps:
