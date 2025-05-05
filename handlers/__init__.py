@@ -1,9 +1,9 @@
 from .admin_http_handler.admin_http_handler import router as admin_http_handler_router
 from .admin_save_callback.admin_save_callback import (
-    router as admin_save_callback_router
+    router as admin_save_callback_router,
 )
 from .command_start_handler.command_start_handler import (
-    router as command_start_handler_router
+    router as command_start_handler_router,
 )
 
 
