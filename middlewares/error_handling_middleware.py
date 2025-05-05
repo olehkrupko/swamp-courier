@@ -6,7 +6,9 @@ from aiogram.dispatcher.middlewares.base import BaseMiddleware
 
 
 class ErrorHandlingMiddleware(BaseMiddleware):
-    async def __call__(self, handler: Callable, event: types.Update, data: dict[str, Any]) -> Any:
+    async def __call__(
+        self, handler: Callable, event: types.Update, data: dict[str, Any]
+    ) -> Any:
         """Middleware to handle errors globally."""
         try:
             return await handler(event, data)

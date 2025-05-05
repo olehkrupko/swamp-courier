@@ -1,7 +1,12 @@
 from hashlib import sha256
 from os import getenv
 
-from aiogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup, Message
+from aiogram.types import (
+    CallbackQuery,
+    InlineKeyboardButton,
+    InlineKeyboardMarkup,
+    Message,
+)
 from magic_filter import F
 
 from config.dispatcher import dp
@@ -9,7 +14,10 @@ from services.redis_service import RedisService
 from services.swamp_api_service import SwampApiService
 
 
-@dp.message(F.chat.func(lambda chat: chat.id == getenv("TELEGRAM_CHATID")) and F.text.contains("http"))
+@dp.message(
+    F.chat.func(lambda chat: chat.id == getenv("TELEGRAM_CHATID"))
+    and F.text.contains("http")
+)
 async def admin_http_handler(message: Message) -> None:
     """Handler that only works for links sent to a specific chat ID."""
     if not getenv("TELEGRAM_CHATID"):

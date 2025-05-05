@@ -32,6 +32,6 @@ async def admin_save_callback(callback_query: CallbackQuery) -> None:
     reply += f"- {feed['explained']['frequency']}\n"
     reply += f"- {feed['explained']['json']}\n\n"
 
-    print(f"Response to admin-save: {href}") 
+    print(f"Response to admin-save: {href}")
     await callback_query.message.answer(reply)
     await callback_query.answer()  # Acknowledge the callback
