@@ -13,7 +13,7 @@ router = Router(name=__name__)
 # requires TELEGRAM_AUTOCONFIRM=false to function
 # if it's true, feed will be authomatically saved
 # and the button won't be shown
-@router.callback_query(F.chat.func(is_admin) and lambda c: c.data and c.data.startswith("admin-save:"))
+@router.callback_query(lambda c: F.chat.func(is_admin) and c.data and c.data.startswith("admin-save:"))
 async def admin_save_callback(callback_query: CallbackQuery) -> None:
     """Process Save button callback for admin_http_handler."""
     href_id = callback_query.data.split("admin-save:")[1]
