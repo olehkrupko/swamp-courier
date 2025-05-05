@@ -23,8 +23,10 @@ class SwampApiService:
         if "http" not in href:
             raise ValueError("Href must be a valid URL.")
 
-        if mode not in [None, 'explain', 'push', 'push_ignore']:
-            raise ValueError("Invalid mode. Choose from 'explain', 'push', 'push_ignore'.")
+        if mode not in [None, "explain", "push", "push_ignore"]:
+            raise ValueError(
+                "Invalid mode. Choose from 'explain', 'push', 'push_ignore'."
+            )
 
         api_url = f"{getenv('SWAMP_API')}/feeds/parse/?href={href}"
         if mode:

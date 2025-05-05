@@ -4,17 +4,12 @@ import sys
 from datetime import datetime
 from os import getenv
 
-from aiogram import Bot
+from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 
-import handlers  # import handlers to register them
-from config.dispatcher import dp
+import handlers
 from middlewares.error_handling_middleware import ErrorHandlingMiddleware
-
-
-# Add the error-handling middleware
-dp.update.outer_middleware(ErrorHandlingMiddleware())
 
 
 async def main() -> None:
@@ -27,7 +22,18 @@ async def main() -> None:
         ),
     )
 
-    # Send message to admin on startup
+    disp = Dispatcher(bot=bot)
+
+    # Register start handler
+    disp.include_router(handlers.command_start_handler.router)
+    # Register admin handlers
+    disp.include_router(handlers.admin_http_handler.router)
+    disp.include_router(handlers.admin_save_callback.router)
+
+    # Add the error-handling middleware
+    disp.update.outer_middleware(ErrorHandlingMiddleware())
+
+    # Send message to admin just before starting the bot
     await bot.send_message(
         chat_id=getenv("TELEGRAM_CHATID"),
         text="{dt} - Bot started successfully!".format(
@@ -36,7 +42,8 @@ async def main() -> None:
     )
 
     # Start polling received messages
-    await dp.start_polling(bot)
+    await disp.start_polling(bot)
+
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, stream=sys.stdout)
