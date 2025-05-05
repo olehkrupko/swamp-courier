@@ -29,7 +29,7 @@ async def main() -> None:
         disp.message_handlers.once = True
 
         # Register start handler
-        disp.register_message_handler(handlers.start_handler)
+        disp.register_message_handler(handlers.command_start_handler)
         # Register admin handlers
         disp.register_message_handler(handlers.admin_http_handler)
         disp.register_message_handler(handlers.admin_save_callback)
