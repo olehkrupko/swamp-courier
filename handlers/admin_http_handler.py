@@ -9,16 +9,16 @@ from services.redis_service import RedisService
 from services.swamp_api_service import SwampApiService
 
 
-@dp.message(F.chat.func(lambda chat: chat.id == getenv("TELEGRAM_ADMIN_CHATID")) and F.text.contains("http"))
+@dp.message(F.chat.func(lambda chat: chat.id == getenv("TELEGRAM_CHATID")) and F.text.contains("http"))
 async def admin_http_handler(message: Message) -> None:
     """Handler that only works for a specific chat ID."""
-    if not getenv("TELEGRAM_ADMIN_CHATID"):
-        raise ValueError("TELEGRAM_ADMIN_CHATID environment variable is not set.")
+    if not getenv("TELEGRAM_CHATID"):
+        raise ValueError("TELEGRAM_CHATID environment variable is not set.")
 
     href = message.text
 
     # Use the service function to send the API request
-    if getenv("TELEGRAM_SKIP_CONFIRMATION"):
+    if getenv("TELEGRAM_AUTOCONFIRM"):
         feed = await SwampApiService.explain_feed_href(href, mode="push")
     else:
         feed = await SwampApiService.explain_feed_href(href)
@@ -54,7 +54,7 @@ async def admin_http_handler(message: Message) -> None:
 
     # Create an inline keyboard with a callback button
     inline_keyboard = [[]]
-    if not feed["similar_feeds"] and not getenv("TELEGRAM_SKIP_CONFIRMATION", False):
+    if not feed["similar_feeds"] and not getenv("TELEGRAM_AUTOCONFIRM", False):
         inline_keyboard = [
             [InlineKeyboardButton(text="Save", callback_data=f"admin-save:{href_id}")]
         ]
