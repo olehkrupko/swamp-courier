@@ -1,8 +1,8 @@
-name: push-lint
-run-name: Lint push to ${{ github.ref_name }}
+name: Push - Lint python code
+run-name: Push - Lint python code for ${{ github.ref_name }}
 
 on: push
 
 jobs:
   python-lint:
-    uses: olehkrupko/actions/.github/workflows/python-lint.yml@6-python-lint-reusable-action
+    uses: olehkrupko/actions/.github/workflows/python-lint.yml@main
