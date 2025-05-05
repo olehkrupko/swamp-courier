@@ -19,3 +19,6 @@ async def command_start_handler(message: Message) -> None:
     )
 
     await message.reply(reply)
+
+
+test = "test message"
