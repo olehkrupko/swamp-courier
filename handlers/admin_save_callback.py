@@ -1,14 +1,19 @@
 from aiogram.types import CallbackQuery
-from config.dispatcher import dp
+from aiogram import Router
 from magic_filter import F
+
 from services.redis_service import RedisService
 from services.swamp_api_service import SwampApiService
+from utils.is_admin import is_admin
+
+
+router = Router(name=__name__)
 
 
 # requires TELEGRAM_AUTOCONFIRM=false to function
 # if it's true, feed will be authomatically saved
 # and the button won't be shown
-@dp.callback_query(F.chat.func(is_admin) and lambda c: c.data and c.data.startswith("admin-save:"))
+@router.callback_query(F.chat.func(is_admin) and lambda c: c.data and c.data.startswith("admin-save:"))
 async def admin_save_callback(callback_query: CallbackQuery) -> None:
     """Process Save button callback for admin_http_handler."""
     href_id = callback_query.data.split("admin-save:")[1]

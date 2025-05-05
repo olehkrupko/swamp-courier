@@ -29,10 +29,7 @@ async def main() -> None:
         disp.message_handlers.once = True
 
         # Register start handler
-        disp.register_message_handler(handlers.command_start_handler)
-        # Register admin handlers
-        disp.register_message_handler(handlers.admin_http_handler)
-        disp.register_message_handler(handlers.admin_save_callback)
+        disp.include_routers(handlers)
 
         # Add the error-handling middleware
         disp.update.outer_middleware(ErrorHandlingMiddleware())

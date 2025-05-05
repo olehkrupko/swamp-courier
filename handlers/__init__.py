@@ -4,8 +4,8 @@ from .command_start_handler import command_start_handler
 
 
 __all__ = [
-    "command_start_handler",
+    "command_start_handler.router",
     # admin handlers:
-    "admin_http_handler",
-    "admin_save_callback",
+    "admin_http_handler.router",
+    "admin_save_callback.router",
 ]
