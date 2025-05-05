@@ -9,7 +9,7 @@ from config.dispatcher import dp
 async def command_start_handler(message: Message) -> None:
     """This handler receives messages with `/start` command."""
     reply = (
-        "Hello, {html.bold(message.from_user.full_name)}!\n"
+        f"Hello, {html.bold(message.from_user.full_name)}!\n"
         "I am a bot that helps you to save feeds to swamp-api and optionally receive updates from there.\n"
         "Feel free to check out my code at https://github.com/olehkrupko/swamp-courier\n"
         "\n"
