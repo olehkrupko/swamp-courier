@@ -2,7 +2,6 @@ from hashlib import sha256
 from os import getenv
 
 from aiogram.types import (
-    CallbackQuery,
     InlineKeyboardButton,
     InlineKeyboardMarkup,
     Message,
@@ -33,7 +32,7 @@ async def admin_http_handler(message: Message) -> None:
 
     reply = ""
     if feed["similar_feeds"]:
-        reply += f"<b>[SIMILAR FEED(S) PRESENT, CANT SAVE]</b>\n\n"
+        reply += "<b>[SIMILAR FEED(S) PRESENT, CANT SAVE]</b>\n\n"
 
     reply += "<b>EXPLAINED</b>:\n"
     reply += f"- {feed['explained']['title']}\n"
@@ -52,7 +51,7 @@ async def admin_http_handler(message: Message) -> None:
         reply += "\n"
 
     if feed["similar_feeds"]:
-        reply += f"<b>[SIMILAR FEED(S) PRESENT, CANT SAVE]</b>"
+        reply += "<b>[SIMILAR FEED(S) PRESENT, CANT SAVE]</b>"
 
     # Generate a unique identifier for the response
     href_id = sha256(href.encode()).hexdigest()[:16]
