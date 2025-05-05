@@ -1,13 +1,12 @@
 from hashlib import sha256
 from os import getenv
 
-from aiogram import Router as AiogramRouter
+from aiogram import F, Router as AiogramRouter
 from aiogram.types import (
     InlineKeyboardButton,
     InlineKeyboardMarkup,
     Message,
 )
-from magic_filter import F
 
 from services.redis_service import RedisService
 from services.swamp_api_service import SwampApiService
