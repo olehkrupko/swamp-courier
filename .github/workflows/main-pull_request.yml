@@ -7,7 +7,7 @@ on:
 
 jobs:
   push-lint-workflow:
-    uses: olehkrupko/swamp-api/.github/workflows/push-lint.yml@26-telegram-ingestion
+    uses: olehkrupko/actions/python-lint/workflow.yml@6-python-lint-reusable-action
   push-lint-action:
     runs-on: ubuntu-latest
     steps:
