@@ -6,13 +6,6 @@ on:
       - main
 
 jobs:
-  push-lint-workflow:
-    uses: olehkrupko/actions/.github/workflows/python-lint.yml@6-python-lint-reusable-action
-  push-lint-action:
-    runs-on: ubuntu-latest
-    steps:
-      - name: push-lint-action
-        uses: olehkrupko/actions/python-lint@6-python-lint-reusable-action
   build-and-push:
     runs-on: ubuntu-latest
     permissions:
