@@ -24,10 +24,6 @@ async def main() -> None:
 
     disp = Dispatcher(bot=bot)
 
-    print(f"{type(handlers.command_start_handler.router)=} {handlers.command_start_handler.router=}")
-    print(f"{type(handlers.command_start_handler.test)=} {handlers.command_start_handler.test=}")
-    print(f"{type(handlers.admin_http_handler.router)=} {handlers.admin_http_handler.router=}")
-    print(f"{type(handlers.admin_save_callback.router)=} {handlers.admin_save_callback.router=}")
     # Register start handler
     disp.include_routers(
         [
