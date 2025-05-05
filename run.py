@@ -22,30 +22,24 @@ async def main() -> None:
         ),
     )
 
-    try:
-        disp = Dispatcher(bot=bot)
+    disp = Dispatcher(bot=bot)
 
-        # Set once to False to allow multiple handlers for the same message type
-        disp.message_handlers.once = True
+    # Register start handler
+    disp.include_routers(handlers)
 
-        # Register start handler
-        disp.include_routers(handlers)
+    # Add the error-handling middleware
+    disp.update.outer_middleware(ErrorHandlingMiddleware())
 
-        # Add the error-handling middleware
-        disp.update.outer_middleware(ErrorHandlingMiddleware())
+    # Send message to admin just before starting the bot
+    await bot.send_message(
+        chat_id=getenv("TELEGRAM_CHATID"),
+        text="{dt} - Bot started successfully!".format(
+            dt=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        ),
+    )
 
-        # Send message to admin just before starting the bot
-        await bot.send_message(
-            chat_id=getenv("TELEGRAM_CHATID"),
-            text="{dt} - Bot started successfully!".format(
-                dt=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            ),
-        )
-
-        # Start polling received messages
-        await disp.start_polling(bot)
-    finally:
-        await bot.close()
+    # Start polling received messages
+    await disp.start_polling(bot)
 
 
 if __name__ == "__main__":
