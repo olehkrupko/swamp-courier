@@ -1,6 +1,3 @@
-from hashlib import sha256
-from os import getenv
-
 from aiogram.types import CallbackQuery
 from config.dispatcher import dp
 from services.redis_service import RedisService
