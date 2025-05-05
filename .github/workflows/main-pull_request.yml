@@ -6,6 +6,8 @@ on:
       - main
 
 jobs:
+  push-lint:
+    uses: olehkrupko/swamp-api/.github/workflows/push-lint.yml@26-telegram-ingestion
   build-and-push:
     runs-on: ubuntu-latest
     permissions:
