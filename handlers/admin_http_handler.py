@@ -51,7 +51,6 @@ async def admin_http_handler(message: Message) -> None:
         reply += "\n"
 
     if feed["similar_feeds"]:
-        reply += "\n"
         reply += "<b>[SIMILAR FEED(S) PRESENT, CANT SAVE]</b>"
 
     # Generate a unique identifier for the response
