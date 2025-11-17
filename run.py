@@ -60,7 +60,7 @@ async def main() -> None:
     await bot.send_message(
         chat_id=getenv("TELEGRAM_CHATID"),
         text="{dt} - Bot started successfully!".format(
-            dt=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            dt=datetime.now().strftime("%Y-%m-%d %H:%M"),
         ),
     )
 
