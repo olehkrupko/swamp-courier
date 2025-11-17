@@ -47,7 +47,7 @@ async def admin_http_handler(message: Message) -> None:
         if each["title"] != feed["explained"]["title"]:
             reply += f"    - title: {each['title']}\n"
         if each["frequency"] != feed["explained"]["frequency"]:
-            reply += f"\t- frequency: {each['frequency']}"
+            reply += f"    - frequency: {each['frequency']}\n"
         reply += "\n"
 
     if feed["similar_feeds"]:
