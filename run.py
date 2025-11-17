@@ -33,6 +33,9 @@ sentry_sdk.init(
 
 
 async def main() -> None:
+    # Delay to allow other services to start
+    await asyncio.sleep(5 * 60)
+
     # set up and log the bot in
     bot = Bot(
         token=getenv("TELEGRAM_BOTTOKEN"),
