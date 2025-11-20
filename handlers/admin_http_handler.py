@@ -1,5 +1,4 @@
 from hashlib import sha256
-from datetime import datetime
 from os import getenv
 
 from aiogram import F, Router as AiogramRouter
