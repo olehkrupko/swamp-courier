@@ -45,10 +45,7 @@ async def admin_http_handler(message: Message) -> None:
     for each in feed["similar_feeds"]:
         reply += f"<b>{each['_id']}</b>: {each['title']}\n"
         if each["_created"]:
-            each["_created"] = datetime.strptime(
-                each["_created"] if "." in each["_created"] else each["_created"] + ".000000",
-                "%Y-%m-%d %H:%M:%S.%f",
-            ).strftime("%Y-%m-%d %H:%M")
+            each["_created"] = ":".join(each["_created"].split(":")[:2])
             reply += f"    - created: {each['_created']}\n"
         if each["title"] != feed["explained"]["title"]:
             reply += f"    - title: {each['title']}\n"
