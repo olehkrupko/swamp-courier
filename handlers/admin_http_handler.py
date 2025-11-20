@@ -46,7 +46,7 @@ async def admin_http_handler(message: Message) -> None:
         reply += f"<b>{each['_id']}</b>: {each['title']}\n"
         if each["_created"]:
             each["_created"] = datetime.strptime(
-                each["_created"],
+                each["_created"] if "." in each["_created"] else each["_created"] + ".000000",
                 "%Y-%m-%d %H:%M:%S.%f",
             ).strftime("%Y-%m-%d %H:%M")
             reply += f"    - created: {each['_created']}\n"
