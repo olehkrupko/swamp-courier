@@ -33,6 +33,9 @@ sentry_sdk.init(
 
 
 async def main() -> None:
+    # Delay to allow other services to start
+    await asyncio.sleep(5 * 60)
+
     # set up and log the bot in
     bot = Bot(
         token=getenv("TELEGRAM_BOTTOKEN"),
@@ -57,7 +60,7 @@ async def main() -> None:
     await bot.send_message(
         chat_id=getenv("TELEGRAM_CHATID"),
         text="{dt} - Bot started successfully!".format(
-            dt=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            dt=datetime.now().strftime("%Y-%m-%d %H:%M"),
         ),
     )
 

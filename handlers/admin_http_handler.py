@@ -43,11 +43,13 @@ async def admin_http_handler(message: Message) -> None:
     reply += f"similar_feeds: {len(feed['similar_feeds'])}\n"
     for each in feed["similar_feeds"]:
         reply += f"<b>{each['_id']}</b>: {each['title']}\n"
-        reply += f"    - created: {each['_created']}\n"
+        if each["_created"]:
+            each["_created"] = ":".join(each["_created"].split(":")[:2])
+            reply += f"    - created: {each['_created']}\n"
         if each["title"] != feed["explained"]["title"]:
             reply += f"    - title: {each['title']}\n"
         if each["frequency"] != feed["explained"]["frequency"]:
-            reply += f"\t- frequency: {each['frequency']}"
+            reply += f"    - frequency: {each['frequency']}\n"
         reply += "\n"
 
     if feed["similar_feeds"]:
